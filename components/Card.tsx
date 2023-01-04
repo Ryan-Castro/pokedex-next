@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { FunctionComponent, MutableRefObject, useEffect, useRef } from 'react';
+import { FunctionComponent, MutableRefObject, useEffect, useRef, useState } from 'react';
+import Modal from "./Modal"
 
 interface CardProps {
     name: string;
@@ -63,8 +64,16 @@ const CardDiv = styled.div`
         background: linear-gradient(180deg, #f7de3f 50%, #ab9842 50%)
     }
 `
+interface Infos{
+    height: number;
+    name: string;
+    weight: number
+    stats: []
+}
 const Card: FunctionComponent<CardProps> = (props)=>{
     const atributs = useRef<HTMLDivElement>(null);
+    const [infos, setInfo] = useState<Infos>()
+    const [show, setShow] = useState<string>("none")
     useEffect(()=>{
         fetch(props.url).then((res)=>{
             if(res.ok){
@@ -74,17 +83,27 @@ const Card: FunctionComponent<CardProps> = (props)=>{
             }
         })
         .then((json)=>{
-            atributs.current.innerHTML = ""
+            setInfo(()=>json)
+            atributs.current!.innerHTML = ""
             json.types.forEach((types:string[])=>{
-                atributs.current.innerHTML += `<div class="tipe ${types["type"].name}">${types["type"].name}</div>`
+                atributs.current!.innerHTML += `<div class="tipe ${types["type"].name}">${types["type"].name}</div>`
             })
         })
     },[])
+
+    function showModal(){
+        if(show==="none"){
+            setShow("flex")
+        } else {
+            setShow("none")
+        }
+    }
   return (
-    <CardDiv>
+    <CardDiv onClick={showModal}>
         <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.url.substring(34,40).replace("/", "")}.png`} alt={`${props.name}`} />
         <h1>{props.name}</h1>
         <div ref={atributs} className="tipes"></div>
+        <Modal height={infos?.height} name={infos?.name} stats={infos?.stats} weight={infos?.weight} display={show} id={props.url.substring(34,40).replace("/", "")}></Modal>
     </CardDiv>
   )
 }
