@@ -31,7 +31,7 @@ const Content = styled.div`
     margin-top: 20px;
     background-color: white;  
     box-shadow: 2px 2px 2px black; 
-    &>div{
+    .pokedex{
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
         padding: 10px 20px;
@@ -44,6 +44,7 @@ const Content = styled.div`
         height: 20px;
         position: absolute;
         bottom: 0px;
+        display: none;
     }
 `
 const Wallpaper = styled.div`
@@ -75,8 +76,9 @@ export default function pokedex() {
             let poke = [...pokemons, ...json.results]
             var novaArr = poke.filter((este, i) => poke.indexOf(este) === i);
             setPokemons(novaArr) 
+            sentinela.current.style.display = "block"
         })
-    
+        
     },[offset])
     useEffect(()=>{
         const intersectionObserver = new IntersectionObserver((entries)=>{
@@ -97,7 +99,7 @@ export default function pokedex() {
       <Container>
         <Content>
             <Header></Header>
-            <div>
+            <div className='pokedex'>
                 {pokemons.map((pokemon, i)=><Card name={pokemon["name"]} url={pokemon['url']} key={i} ></Card>)}
                 <div className='sentinela' ref={sentinela}></div>
             </div>
