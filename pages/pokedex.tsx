@@ -1,18 +1,19 @@
 import Head from 'next/head'
 import Header from '../components/Header'
 import styled, {createGlobalStyle} from 'styled-components'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Card from '../components/Card'
 
 const GlobalStyle = createGlobalStyle`
     *{
         margin: 0px;
         box-sizing: border-box;
+        overflow-x: hidden;
     }
     body{
         width: 100vw;
         height: 100vh;
-        overflow: auto;
+        
     }
 
 `
@@ -34,21 +35,34 @@ const Content = styled.div`
         grid-template-columns: 1fr 1fr 1fr 1fr;
         padding: 10px 20px;
         gap: 20px;
+        position: relative;
+    }
+    .sentinela{
+        background-color: red;
+        width: 99%;
+        height: 20px;
+        position: absolute;
+        bottom: 0px;
     }
 `
 const Wallpaper = styled.div`
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     position: fixed;
     z-index: -19;
+
     background-image: url('https://i.pinimg.com/originals/33/ac/6a/33ac6af8e90054568ab47ad0ef2d02a2.png');
 `
+
+
     
 export default function pokedex() {
 
-    const [pokemons, setPokemons] = useState([])
+    const [pokemons, setPokemons] = useState<{ name: string, url: string }[]>([])
+    const [offset, setOffset] = useState(0)
+    const sentinela = useRef()
     useEffect(()=>{
-        fetch("https://pokeapi.co/api/v2/pokemon/?limit=200&offset=0")
+        fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`)
         .then((res)=>{
             if(res.ok){
                 return res.json()
@@ -57,8 +71,20 @@ export default function pokedex() {
             }
         })
         .then((json)=>{
-            setPokemons(json.results)
+            let poke = [...pokemons, ...json.results]
+            var novaArr = poke.filter((este, i) => poke.indexOf(este) === i);
+            setPokemons(novaArr) 
         })
+    
+    },[offset])
+    useEffect(()=>{
+        const intersectionObserver = new IntersectionObserver((entries)=>{
+         if(entries.some((entry)=>entry.isIntersecting)){
+            setOffset((offsetInsideState)=> offsetInsideState + 20)
+         }   
+        })
+        intersectionObserver.observe(sentinela.current)
+        return () => intersectionObserver.disconnect() 
     },[])
   return (
     <>
@@ -72,6 +98,7 @@ export default function pokedex() {
             <Header></Header>
             <div>
                 {pokemons.map((pokemon, i)=><Card name={pokemon["name"]} url={pokemon['url']} key={i} ></Card>)}
+                <div className='sentinela' ref={sentinela}></div>
             </div>
         </Content>
       </Container>
