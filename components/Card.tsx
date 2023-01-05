@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FunctionComponent, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import Modal from "./Modal"
 
 interface CardProps {
@@ -17,6 +17,7 @@ const CardDiv = styled.div`
     justify-content: space-evenly;
     border-radius: 20px;
     box-shadow: 2px 2px 2px black;
+    text-transform: capitalize;
     &>img{
         width: 150px;
         height: 150px;
@@ -62,6 +63,27 @@ const CardDiv = styled.div`
     }
     .ground{
         background: linear-gradient(180deg, #f7de3f 50%, #ab9842 50%)
+    }
+    .fairy{
+        background-color: #fdb9e9;
+    }
+    .fighting{
+        background-color: #d56723;
+    }
+    .psychic{
+        background-color: #f366b9;
+    }
+    .rock{
+        background-color: #a38c21;
+    }
+    .steel{
+        background-color: #9eb7b8;
+    }
+    .ice{
+        background-color: #51c4e7;
+    }
+    .ghost{
+        background-color: #7b62a3;
     }
 `
 interface Infos{

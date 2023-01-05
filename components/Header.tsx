@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 import Link from 'next/link';
-
 const Container = styled.div`
     display: block;
     width: 100%;
-    
     ul{
       width: 100%;
       display: flex;
@@ -29,11 +27,8 @@ export default function Header() {
   return (
     <Container>
         <ul>
-            <Link href={"/"}><li>Inicio</li></Link>
-            <Link href={"/pokedex"}><li>Pokedex</li></Link>
+            <Link href={"/"}><li>Início</li></Link>
             <Link href={"/sobre"}><li>Sobre</li></Link>
-            
-            
         </ul>
     </Container>
   )
