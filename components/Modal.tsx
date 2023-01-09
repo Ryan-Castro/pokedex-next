@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FunctionComponent} from 'react';
+import { FunctionComponent, useEffect, useRef} from 'react';
 
 interface Base {
     base_stat: number;
@@ -18,7 +18,7 @@ interface ModalProps {
 
 
 const ModalDiv= styled.div`
-    display: ${(props:{display:string})=> props.display};
+    display: none;
     position: fixed;
     top: 0px;
     left: 0px;
@@ -73,8 +73,18 @@ const ModalDiv= styled.div`
 
 const Card: FunctionComponent<ModalProps> = (props)=>{
 
+    const modal = useRef<HTMLDivElement>(null)
+
+    useEffect(()=>{
+        if(props.display === "flex"){
+            modal.current!.style.display = "flex"
+        } else {
+            modal.current!.style.display = "none"
+        }
+    },[props.display])
+
   return (
-    <ModalDiv display={props.display}>
+    <ModalDiv ref={modal}>
         <div>
             <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.id}.png`} alt="" />
             <div className='stats'>
