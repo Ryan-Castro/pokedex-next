@@ -61,7 +61,16 @@ const Pokedex: React.FC = ()=>{
 
     const [pokemons, setPokemons] = useState<{ name: string, url: string }[]>([])
     const [offset, setOffset] = useState<number>(0)
-    const sentinela = useRef<HTMLDivElement>(null)
+    const sentinela = useRef(document.createElement("div"))
+    useEffect(()=>{
+        const intersectionObserver = new IntersectionObserver((entries)=>{
+            if(entries.some((entry)=>entry.isIntersecting)){
+                setOffset((offsetInsideState)=> offsetInsideState + 20)
+            }   
+        })
+        intersectionObserver.observe(sentinela.current)
+        return () => intersectionObserver.disconnect() 
+    },[])
     useEffect(()=>{
         fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`)
         .then((res)=>{
@@ -76,19 +85,9 @@ const Pokedex: React.FC = ()=>{
             var novaArr = poke.filter((este, i) => poke.indexOf(este) === i);
             setPokemons(novaArr) 
             sentinela.current.style.display = "block"
-        })
-        
+        }) 
     },[offset])
-    useEffect(()=>{
-        const intersectionObserver = new IntersectionObserver((entries)=>{
-         if(entries.some((entry)=>entry.isIntersecting)){
-            setOffset((offsetInsideState)=> offsetInsideState + 20)
-         }   
-        })
-        intersectionObserver.observe(sentinela.current)
-        return () => intersectionObserver.disconnect() 
-    },[])
-  return (
+    return (
     <>
       <Head>
         <title>Pokedex</title>
