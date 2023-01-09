@@ -57,8 +57,7 @@ const Wallpaper = styled.div`
 `
 
 
-    
-export default function pokedex() {
+const Pokedex: React.FC = ()=>{
 
     const [pokemons, setPokemons] = useState<{ name: string, url: string }[]>([])
     const [offset, setOffset] = useState(0)
@@ -108,3 +107,5 @@ export default function pokedex() {
     </>
   )
 }
+
+export default Pokedex
