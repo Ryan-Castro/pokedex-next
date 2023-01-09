@@ -60,7 +60,7 @@ const Wallpaper = styled.div`
 const Pokedex: React.FC = ()=>{
 
     const [pokemons, setPokemons] = useState<{ name: string, url: string }[]>([])
-    const [offset, setOffset] = useState(0)
+    const [offset, setOffset] = useState<number>(0)
     const sentinela = useRef<HTMLDivElement>(null)
     useEffect(()=>{
         fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`)

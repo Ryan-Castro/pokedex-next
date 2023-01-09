@@ -107,11 +107,11 @@ const Card: FunctionComponent<CardProps> = (props)=>{
         .then((json)=>{
             setInfo(()=>json)
             atributs.current!.innerHTML = ""
-            json.types.forEach((types:string[])=>{
+            json.types.forEach((types:{type:{name:string}})=>{
                 atributs.current!.innerHTML += `<div class="tipe ${types["type"].name}">${types["type"].name}</div>`
             })
         })
-    },[])
+    },[props.url])
 
     function showModal(){
         if(show==="none"){
@@ -122,7 +122,7 @@ const Card: FunctionComponent<CardProps> = (props)=>{
     }
   return (
     <CardDiv onClick={showModal}>
-        <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.url.substring(34,40).replace("/", "")}.png`} alt={`${props.name}`} />
+        <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.url.substring(34,40).replace("/", "")}.png`} alt={`${props.name}`}/>
         <h1>{props.name}</h1>
         <div ref={atributs} className="tipes"></div>
         <Modal height={infos?.height} name={infos?.name} stats={infos?.stats} weight={infos?.weight} display={show} id={props.url.substring(34,40).replace("/", "")}></Modal>
