@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Header from '../components/Header'
 import styled, {createGlobalStyle} from 'styled-components'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useLayoutEffect } from 'react'
 import Card from '../components/Card'
 
 const GlobalStyle = createGlobalStyle`
@@ -61,15 +61,15 @@ const Pokedex: React.FC = ()=>{
 
     const [pokemons, setPokemons] = useState<{ name: string, url: string }[]>([])
     const [offset, setOffset] = useState<number>(0)
-    const sentinela = useRef(document.createElement("div"))
+    const sentinela = useRef<HTMLDivElement>(null)
     useEffect(()=>{
         const intersectionObserver = new IntersectionObserver((entries)=>{
             if(entries.some((entry)=>entry.isIntersecting)){
                 setOffset((offsetInsideState)=> offsetInsideState + 20)
             }   
         })
-        intersectionObserver.observe(sentinela.current)
-        return () => intersectionObserver.disconnect() 
+        intersectionObserver.observe(sentinela.current);
+        return () => intersectionObserver.disconnect();
     },[])
     useEffect(()=>{
         fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`)
@@ -84,7 +84,7 @@ const Pokedex: React.FC = ()=>{
             let poke = [...pokemons, ...json.results]
             var novaArr = poke.filter((este, i) => poke.indexOf(este) === i);
             setPokemons(novaArr) 
-            sentinela.current.style.display = "block"
+            sentinela.current?.style.display = "block"
         }) 
     },[offset])
     return (

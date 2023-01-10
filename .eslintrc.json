@@ -1,3 +1,14 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "plugins": ["react", "jsx-a11y", "import"],
+  "rules": {
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extension": [".js", ".jsx"]
+      }
+    ],
+    "no-unused-expressions": ["error", {"allowTaggedTemplates": true}]
+  }
 }
