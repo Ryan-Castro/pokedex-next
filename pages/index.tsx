@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Header from '../components/Header'
 import styled, {createGlobalStyle} from 'styled-components'
-import { useEffect, useRef, useState, useLayoutEffect } from 'react'
+import { useRef, useState, useLayoutEffect } from 'react'
 import Card from '../components/Card'
 
 const GlobalStyle = createGlobalStyle`
@@ -46,6 +46,16 @@ const Content = styled.div`
         bottom: 0px;
         display: none;
     }
+    @media (max-width:1000px){
+        .pokedex{
+            grid-template-columns: 1fr 1fr ;
+        }
+    }
+    @media (max-width:600px){
+        .pokedex{
+            grid-template-columns: 1fr ;
+        }
+    }
 `
 const Wallpaper = styled.div`
     width: 100%;
@@ -62,16 +72,16 @@ const Pokedex: React.FC = ()=>{
     const [pokemons, setPokemons] = useState<{ name: string, url: string }[]>([])
     const [offset, setOffset] = useState<number>(0)
     const sentinela = useRef<HTMLDivElement>(null)
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         const intersectionObserver = new IntersectionObserver((entries)=>{
             if(entries.some((entry)=>entry.isIntersecting)){
                 setOffset((offsetInsideState)=> offsetInsideState + 20)
             }   
         })
-        intersectionObserver.observe(sentinela.current);
+        intersectionObserver.observe(sentinela.current!);
         return () => intersectionObserver.disconnect();
     },[])
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`)
         .then((res)=>{
             if(res.ok){
@@ -84,7 +94,7 @@ const Pokedex: React.FC = ()=>{
             let poke = [...pokemons, ...json.results]
             var novaArr = poke.filter((este, i) => poke.indexOf(este) === i);
             setPokemons(novaArr) 
-            sentinela.current?.style.display = "block"
+            sentinela.current!.style.display = "block"
         }) 
     },[offset])
     return (
