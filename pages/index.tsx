@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Header from '../components/Header'
 import styled, {createGlobalStyle} from 'styled-components'
-import { useRef, useState, useLayoutEffect } from 'react'
+import React, { useRef, useState, useLayoutEffect } from 'react'
 import Card from '../components/Card'
 
 const GlobalStyle = createGlobalStyle`
@@ -72,7 +72,7 @@ const Pokedex: React.FC = ()=>{
     const [pokemons, setPokemons] = useState<{ name: string, url: string }[]>([])
     const [offset, setOffset] = useState<number>(0)
     const sentinela = useRef<HTMLDivElement>(null)
-    useLayoutEffect(()=>{
+    React.useLayoutEffect(()=>{
         const intersectionObserver = new IntersectionObserver((entries)=>{
             if(entries.some((entry)=>entry.isIntersecting)){
                 setOffset((offsetInsideState)=> offsetInsideState + 20)
@@ -81,7 +81,7 @@ const Pokedex: React.FC = ()=>{
         intersectionObserver.observe(sentinela.current!);
         return () => intersectionObserver.disconnect();
     },[])
-    useLayoutEffect(()=>{
+    React.useLayoutEffect(()=>{
         fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`)
         .then((res)=>{
             if(res.ok){
@@ -101,6 +101,7 @@ const Pokedex: React.FC = ()=>{
     <>
       <Head>
         <title>Pokedex</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
       </Head>
       <GlobalStyle></GlobalStyle>
       <Wallpaper></Wallpaper>
