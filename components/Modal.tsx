@@ -58,6 +58,7 @@ const ModalDiv= styled.div`
         width: 100%;
         justify-content: space-between;
         margin-top: 20px;
+        overflow: hidden;
     }
     .stats>ul{
         display: flex;
@@ -68,6 +69,32 @@ const ModalDiv= styled.div`
         display: flex;
         justify-content: space-between;
         margin-top: 10px;
+        overflow: hidden;
+    }
+    h1{
+        overflow: hidden;
+    } 
+    h3{
+        overflow: hidden;
+    }
+    @media (max-width: 1300px){
+        &>div{
+            flex-direction: column;
+            height: 90vh;
+        }
+        img{
+            height: 40%;
+        }
+        .stats{
+            width: 95%;
+            height: 55%;
+        }
+    }
+    @media (max-width: 600px){
+        &>div{
+            flex-direction: column;
+            width: 80vw;
+        }
     }
 `
 
